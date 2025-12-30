@@ -4,7 +4,6 @@ import utils.Utilities;
 // abstract define shared behaviour, ideal for our super class
 public abstract class Pet {
 
-
     // --------------------
     // -------Fields-------
     // static field(belongs to this class), ID generation(shared state by all Pet objects)
@@ -12,21 +11,30 @@ public abstract class Pet {
 
     private int id;
     private String name = "";
+    private int age = 0;
+    private char sex = 'f';
     private String owner = "";
     // a week has 7 days so our array will have 7 value's.
     private boolean[] daysAttending = new boolean[] {false, false, false, false, false, false, false};
-    private char sex = 'f';
-    private int age = 0;
 
 
     // --------------------
     // ----Constructors----
-    public Pet(String name, String owner, char sex, int age) {
+    public Pet(int id, String name, int age, char sex, String owner) {
         this.id = nextId++;
+        // ID rules: >= 1000. If invalid, generate. Always advance nextId for uniqueness.
+        if (id >= 1000) {
+            this.id = id;
+            // keep nextId ahead of any specifically provided IDs
+            if (id >= nextId) {
+                nextId = id + 1;
+            }
+        // attribute next valid ID value to new ID
+        } else {
+            this.id = nextId++;
+        }
         // truncate will enforce max length, use this. for validation, store in the object
         this.name = Utilities.truncateString(name, 30);
-        // as above we ensure owner name does not exceed 20 characters
-        this.owner = Utilities.truncateString(owner, 20);
         // non-string field: update only if the value is valid; otherwise retain the default value
         if (age >= 0) {
             this.age = age;
@@ -35,20 +43,8 @@ public abstract class Pet {
         if (isValidSex(sex)) {
             this.sex = Character.toLowerCase(sex);
         }
-        // ID rules: >= 1000. If invalid, generate. Always advance nextId for uniqueness.
-        if (id >= 1000) {
-            this.id = id;
-            // keep nextId ahead of any specifically provided IDs
-            if (id >= nextId) {
-                nextId = id + 1;
-            } else {
-                nextId++;
-            }
-        // attribute next valid ID value to new ID
-        } else {
-            this.id = nextId;
-            nextId++;
-        }
+        // as above we ensure owner name does not exceed 20 characters
+        this.owner = Utilities.truncateString(owner, 20);
     }
 
 
@@ -144,7 +140,7 @@ public abstract class Pet {
 
     public void setDaysAttending(boolean[] daysAttending) {
         // only update if valid
-        if (daysAttending != null && daysAttending.length == 5) {
+        if (daysAttending != null && daysAttending.length == 7) {
             this.daysAttending = daysAttending;
         }
     }
