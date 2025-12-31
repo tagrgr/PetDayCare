@@ -1,12 +1,18 @@
 package controllers;
 
+import models.Pet;
+import utils.ISerializer;
 
-
+import java.util.ArrayList;
 
 public class DayCare {
 
  //TODO Create a list to store the Pets
+ private ArrayList<Pet> pets;
+
     //TODO Create a field to store the Kennel Name
+    private String name;
+    private ISerializer serializer;
 
     //TODO create constructor initialise the kennel name and to instantiate the pets list
 
