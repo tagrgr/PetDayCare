@@ -43,6 +43,7 @@ public class Dog extends Pet {
     // ---------------------
     // -------Methods-------
     // instance methods, overrides abstract method from our superclass
+    // calculates the weekly boarding fee for a dog based on daily rate and attendance
     @Override
     public double calculateWeeklyFee() {
         float rate;
@@ -93,6 +94,7 @@ public class Dog extends Pet {
 
     // ---------------------
     // -------toString-------
+    // returns a single-line string with pet and dog-specific details
     @Override
     public String toString() {
         return super.toString()
