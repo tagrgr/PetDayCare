@@ -18,16 +18,21 @@ public class Dog extends Pet {
 
     // --------------------
     // ----Constructors----
+    // default constructor required for XML serialization
+    public Dog() {
+        super(0, "", 0, 'f', "");
+    }
+
+    // constructor
     public Dog(int id, String name, int age, char sex, String owner,
                String breed, boolean dangerousBreed, boolean neutered) {
 
         // initialize common Pet fields using the superclass constructor
         super(id, name, age, sex, owner);
 
-        // breed: max 20 chars; validate using DogBreedUtility
         if (breed != null) {
+            // breed: max 20 chars; validate using DogBreedUtility
             String truncated = Utilities.truncateString(breed, 20);
-
             // make the input match what dog breed utility expects
             String normalisedForCheck = truncated.toUpperCase();
             if (DogBreedUtility.checkBreed(normalisedForCheck)) {

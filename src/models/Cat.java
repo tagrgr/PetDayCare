@@ -13,6 +13,12 @@ public class Cat extends Pet {
 
     // --------------------
     // ----Constructors----
+    // default constructor required for XML serialization
+    public Cat() {
+        super(0, "", 0, 'f', "");
+    }
+
+    // constructor
     public Cat(int id, String name, int age, char sex, String owner,
                boolean indoorCat, String favouriteToy) {
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="25.0.1" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="models.Dog">
+    <void property="age">
+     <int>8</int>
+    </void>
+    <void property="breed">
+     <string>PIT BULL</string>
+    </void>
+    <void property="dangerousBreed">
+     <boolean>true</boolean>
+    </void>
+    <void property="id">
+     <int>1001</int>
+    </void>
+    <void property="name">
+     <string>Maya</string>
+    </void>
+    <void property="owner">
+     <string>Nartiely</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="models.Cat">
+    <void property="age">
+     <int>14</int>
+    </void>
+    <void property="favouriteToy">
+     <string>TUNNEL</string>
+    </void>
+    <void property="id">
+     <int>1005</int>
+    </void>
+    <void property="name">
+     <string>Ball</string>
+    </void>
+    <void property="owner">
+     <string>Tiago</string>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>
