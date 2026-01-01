@@ -6,6 +6,7 @@ import models.Dog;
 import utils.ISerializer;
 import utils.Utilities;
 import utils.XMLSerializer;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -335,7 +336,6 @@ public class DayCare {
     }
 
     // Loads all Pet objects from Pets.xml in the pets collection.
-    @SuppressWarnings("unchecked")
     public void load() {
         try {
             Object obj = serializer.read();
@@ -350,6 +350,7 @@ public class DayCare {
     // -------------------
     // Update Methods
     // -------------------
+    // updates an existing dog in the list by matching id and replacing its details
     public Dog updateDog(int id, Dog updatedDetails) {
         if (updatedDetails == null) {
             return null;
@@ -364,6 +365,7 @@ public class DayCare {
         return null;
     }
 
+    // updates an existing cat in the list by matching id and replacing its details
     public Cat updateCat(int id, Cat updatedDetails) {
         if (updatedDetails == null) {
             return null;
@@ -381,6 +383,7 @@ public class DayCare {
     // ----------------------
     // Other / Search Methods
     // ----------------------
+    // calculates and returns the total weekly income from all pets
     public double getWeeklyIncome() {
         double total = 0;
         for (Pet pet : pets) {
@@ -389,6 +392,7 @@ public class DayCare {
         return total;
     }
 
+    // finds and returns a dog matching owner, breed, and age
     public Pet findDogByOwnerAndBreedAndAge(String owner, String breed, int age) {
         for (Pet pet : pets) {
             if (pet instanceof Dog) {
@@ -403,6 +407,7 @@ public class DayCare {
         return null;
     }
 
+    // returns a formatted list of pets belonging to the given owner
     public String getPetsByOwnersName(String owner) {
         String report = "";
         int count = 0;
