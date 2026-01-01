@@ -11,9 +11,9 @@ public class Dog extends Pet {
     private boolean dangerousBreed = false;
     private boolean neutered = false;
     // static final field (cannot be changed)
-    public static final float dangerousDailyRate = 40f;
+    public static final float DANGEROUS_DAILY_RATE = 40f;
     // we're defining a higher rate for dangerous breeds and a lower rate for non-dangerous.
-    public static final float nonDangerousDailyRate = 30f;
+    public static final float NONDANGEROUS_DAILY_RATE = 30f;
 
 
     // --------------------
@@ -21,7 +21,7 @@ public class Dog extends Pet {
     public Dog(int id, String name, int age, char sex, String owner,
                String breed, boolean dangerousBreed, boolean neutered) {
 
-        // initialise common Pet fields using the superclass constructor
+        // initialize common Pet fields using the superclass constructor
         super(id, name, age, sex, owner);
 
         // breed: max 20 chars; validate using DogBreedUtility
@@ -49,9 +49,9 @@ public class Dog extends Pet {
         float rate;
 
         if (dangerousBreed) {
-            rate = dangerousDailyRate;
+            rate = DANGEROUS_DAILY_RATE;
         } else {
-            rate = nonDangerousDailyRate;
+            rate = NONDANGEROUS_DAILY_RATE;
         }
         return rate * numOfDaysInKennel();
     }
