@@ -432,9 +432,9 @@ public class Driver {
     }
 
     // Extra functionality / Enhancement
-    //---------------------
+    //--------------------
     //  Sort Menu Items
-    //---------------------
+    //--------------------
     // handles the sort menu flow and sorts the pets list based on the selected option
     private void sortMenu() {
         int option = mainSortMenu();
