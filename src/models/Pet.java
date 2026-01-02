@@ -1,3 +1,5 @@
+/* https://github.com/tagrgr/PetDayCare */
+
 package models;
 import utils.Utilities;
 
@@ -21,7 +23,7 @@ public abstract class Pet {
     // --------------------
     // ----Constructors----
     public Pet(int id, String name, int age, char sex, String owner) {
-        this.id = nextId++;
+//        this.id = nextId++;
         // ID rules: >= 1000. If invalid, generate. Always advance nextId for uniqueness.
         if (id >= 1000) {
             this.id = id;

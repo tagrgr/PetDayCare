@@ -1,3 +1,5 @@
+/* https://github.com/tagrgr/PetDayCare */
+
 package controllers;
 
 import models.Pet;
@@ -48,28 +50,6 @@ public class DayCare {
     public Pet deletePetByIndex(int index) {
         if (Utilities.isValidIndex(pets, index)) {
             return pets.remove(index);
-        }
-        return null;
-    }
-
-    // Deletes and returns the Pet with the specified id.
-    // parameter id the id of the Pet to delete
-    // return the deleted Pet if found; null otherwise
-    public Pet deletePetById(int id) {
-        for (int i = 0; i < pets.size(); i++) {
-            if (pets.get(i).getId() == id) {
-                return pets.remove(i);
-            }
-        }
-        return null;
-    }
-
-    // Returns the Pet at the specified index.
-    // parameter index the position of the Pet in the pets list
-    // return the Pet if index is valid; null otherwise
-    public Pet getPetByIndex(int index) {
-        if (Utilities.isValidIndex(pets, index)) {
-            return pets.get(index);
         }
         return null;
     }
@@ -221,24 +201,52 @@ public class DayCare {
         return report.substring(0, report.length() - 1);
     }
 
+    public String listAllIndoorCats() {
+        String report = "";
+        int count = 0;
+
+        for (int i = 0; i < pets.size(); i++) {
+            if (pets.get(i) instanceof Cat) {
+                Cat cat = (Cat) pets.get(i);
+                if (cat.isIndoorCat()) {
+                    report += i + ": " + cat.toString() + "\n";
+                    count++;
+                }
+            }
+        }
+
+        if (count == 0) {
+            return "No Indoor Cats";
+        }
+        return report.substring(0, report.length() - 1);
+    }
+
+    public String listAllDogsOlderThan(int age) {
+        String report = "";
+        int count = 0;
+
+        for (int i = 0; i < pets.size(); i++) {
+            if (pets.get(i) instanceof Dog) {
+                Dog dog = (Dog) pets.get(i);
+                if (dog.getAge() > age) {
+                    report += i + ": " + dog.toString() + "\n";
+                    count++;
+                }
+            }
+        }
+
+        if (count == 0) {
+            return "No Dogs older than " + age;
+        }
+        return report.substring(0, report.length() - 1);
+    }
+
     // TODO number methods
 
     // Returns the number of pets in the system.
     // return the number of Pet objects in pets
     public int numberOfPets() {
         return pets.size();
-    }
-
-    // Returns the number of cats in the system.
-    // return number of Cat objects in pets
-    public int numberOfCats() {
-        int count = 0;
-        for (Pet pet : pets) {
-            if (pet instanceof Cat) {
-                count++;
-            }
-        }
-        return count;
     }
 
     // Returns the number of dogs in the system.
@@ -253,34 +261,61 @@ public class DayCare {
         return count;
     }
 
-    // Returns the number of dangerous dogs in the system
-    // return number of dangerous Dog objects in pets
-    public int numberOfDangerousDogs() {
+    // Returns the number of cats in the system.
+    // return number of Cat objects in pets
+    public int numberOfCats() {
         int count = 0;
         for (Pet pet : pets) {
-            if (pet instanceof Dog) {
-                Dog dog = (Dog) pet;
-                if (dog.isDangerousBreed()) {
-                    count++;
-                }
+            if (pet instanceof Cat) {
+                count++;
             }
         }
         return count;
     }
 
-    // Returns the number of indoor cats in the system.
-    // return number of indoor Cat objects in pets
-    public int numberOfIndoorCats() {
+    public String listAllCatsByFavouriteToy(String toy) {
+        if (toy == null) {
+            return "No Cats with that toy";
+        }
+
+        String target = toy.trim().toUpperCase();
+        String report = "";
         int count = 0;
-        for (Pet pet : pets) {
-            if (pet instanceof Cat) {
-                Cat cat = (Cat) pet;
-                if (cat.isIndoorCat()) {
+
+        for (int i = 0; i < pets.size(); i++) {
+            if (pets.get(i) instanceof Cat) {
+                Cat cat = (Cat) pets.get(i);
+                if (cat.getFavouriteToy().equalsIgnoreCase(target)) {
+                    report += i + ": " + cat.toString() + "\n";
                     count++;
                 }
             }
         }
-        return count;
+
+        if (count == 0) {
+            return "No Cats with favourite toy " + target;
+        }
+        return report.substring(0, report.length() - 1);
+    }
+
+    public String listAllNeuteredAnimals() {
+        String report = "";
+        int count = 0;
+
+        for (int i = 0; i < pets.size(); i++) {
+            if (pets.get(i) instanceof Dog) {
+                Dog dog = (Dog) pets.get(i);
+                if (dog.isNeutered()) {
+                    report += i + ": " + dog.toString() + "\n";
+                    count++;
+                }
+            }
+        }
+
+        if (count == 0) {
+            return "No Neutered Animals";
+        }
+        return report.substring(0, report.length() - 1);
     }
 
     //TODO validation method below:
@@ -309,14 +344,6 @@ public class DayCare {
     // Returns the pets collection. return ArrayList of Pet objects
     public ArrayList<Pet> getPets() {
         return pets;
-    }
-
-    // Replaces the pets collection.
-    // parameter pets the new pets collection
-    public void setPets(ArrayList<Pet> pets) {
-        if (pets != null) {
-            this.pets = pets;
-        }
     }
 
     //TODO - delete methods
@@ -350,35 +377,45 @@ public class DayCare {
     // -------------------
     // Update Methods
     // -------------------
-    // updates an existing dog in the list by matching id and replacing its details
-    public Dog updateDog(int id, Dog updatedDetails) {
-        if (updatedDetails == null) {
-            return null;
-        }
+    // update by dog setters
+    public boolean dogUpdate(int id, String name, int age, char sex, String owner,
+                                  String breed, boolean dangerousBreed, boolean neutered) {
+        Pet pet = getPetById(id);
+        if (!(pet instanceof Dog)) return false;
 
-        for (int i = 0; i < pets.size(); i++) {
-            if (pets.get(i) instanceof Dog && pets.get(i).getId() == id) {
-                pets.set(i, updatedDetails);
-                return updatedDetails;
-            }
-        }
-        return null;
+        // update the existing dog using setters
+        Dog dog = (Dog) pet;
+        // pet setters
+        dog.setName(name);
+        dog.setAge(age);
+        dog.setSex(sex);
+        dog.setOwner(owner);
+        // dog setters
+        dog.setBreed(breed);
+        dog.setDangerousBreed(dangerousBreed);
+        dog.setNeutered(neutered);
+        return true;
     }
 
-    // updates an existing cat in the list by matching id and replacing its details
-    public Cat updateCat(int id, Cat updatedDetails) {
-        if (updatedDetails == null) {
-            return null;
-        }
+    //update by cat setters
+    public boolean catUpdate(int id, String name, int age, char sex, String owner,
+                                  boolean indoorCat, String favouriteToy) {
+        Pet pet = getPetById(id);
+        if (!(pet instanceof Cat)) return false;
 
-        for (int i = 0; i < pets.size(); i++) {
-            if (pets.get(i) instanceof Cat && pets.get(i).getId() == id) {
-                pets.set(i, updatedDetails);
-                return updatedDetails;
-            }
-        }
-        return null;
+        // update the existing dog using setters
+        Cat cat = (Cat) pet;
+        // pet setters
+        cat.setName(name);
+        cat.setAge(age);
+        cat.setSex(sex);
+        cat.setOwner(owner);
+        // cat setters
+        cat.setIndoorCat(indoorCat);
+        cat.setFavouriteToy(favouriteToy);
+        return true;
     }
+
 
     // ----------------------
     // Other / Search Methods

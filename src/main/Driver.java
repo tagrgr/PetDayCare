@@ -47,10 +47,13 @@ public class Driver {
                 ----------------------------------
                 1) Pets CRUD Menu
                 2) Reports Menu
+                ----------------------------------
                 3) Search Pets
                 4) Sort Pets
+                ----------------------------------
                 10) Save all
                 11) Load all
+                ----------------------------------
                 0) Exit
                 """);
 
@@ -129,10 +132,10 @@ public class Driver {
                     deletePetByIndex();
                     break;
                 case 3:
-                    System.out.println(daycare.listAllPets());
+                    updatePetById();
                     break;
                 case 4:
-                    updatePetById();
+                    System.out.println(daycare.listAllPets());
                     break;
                 default:
                     System.out.println("Invalid option - please try again.");
@@ -150,8 +153,8 @@ public class Driver {
         -------------------------
         1) Add a new Pet
         2) Delete a Pet (by index)
-        3) List all Pets
-        4) Update Pet Information (by id)
+        3) Update Pet Information (by id)
+        4) List all Pets
         0) Return to Main Menu
         """);
         return ScannerInput.readNextInt("==>> ");
@@ -190,6 +193,22 @@ public class Driver {
                 case 7:
                     System.out.println("Weekly Income: " + daycare.getWeeklyIncome());
                     break;
+                case 8:
+                    System.out.println(daycare.listAllIndoorCats());
+                    break;
+                case 9: {
+                    int age = ScannerInput.readNextInt("Enter minimum age: ");
+                    System.out.println(daycare.listAllDogsOlderThan(age));
+                    break;
+                }
+                case 10: {
+                    String toy = ScannerInput.readNextLine("Enter favourite toy: ");
+                    System.out.println(daycare.listAllCatsByFavouriteToy(toy));
+                    break;
+                }
+                case 11:
+                    System.out.println(daycare.listAllNeuteredAnimals());
+                    break;
                 default:
                     System.out.println("Invalid option, please try again.");
             }
@@ -211,6 +230,11 @@ public class Driver {
         5) List Pets by Owner
         6) List Pets staying more than X days
         7) Weekly Income Report
+        8) List all Indoor Cats
+        9) List all Dogs older than an Age
+        10) List all Cats by Favourite Toy
+        11) List all Neutered Animals
+        -------------------------
         0) Return to Main Menu
         """);
 
@@ -254,6 +278,15 @@ public class Driver {
                     System.out.println(daycare.getPetsByOwnersName(owner));
                     break;
                 }
+                case 3:
+                    System.out.println("Number of Pets: " + daycare.numberOfPets());
+                    break;
+                case 4:
+                    System.out.println("Number of Dogs: " + daycare.numberOfDogs());
+                    break;
+                case 5:
+                    System.out.println("Number of Cats: " + daycare.numberOfCats());
+                    break;
                 // handle invalid menu options
                 default:
                     System.out.println("Invalid option - please try again.");
@@ -272,6 +305,9 @@ public class Driver {
         -------------------------
         1) Find Dog by Owner, Breed and Age
         2) List Pets by Owner
+        3) Number of Pets
+        4) Number of Dogs
+        5) Number of Cats
         0) Return to Main Menu
         """);
 
@@ -296,6 +332,11 @@ public class Driver {
         String owner = ScannerInput.readNextLine("Enter owner name: ");
         int id = ScannerInput.readNextInt("Enter id (>=1000) or 0 to auto-generate: ");
 
+        if (id >= 1000 && !daycare.isValidId(id)) {
+            System.out.println("ID already exists. Pet not added.");
+            return;
+        }
+
         // if the user selected dog:
         if (type == 1) {
 
@@ -307,13 +348,15 @@ public class Driver {
             // create a new dog object
             Dog dog = new Dog(id, name, age, sex, owner, breed, dangerousBreed, neutered);
 
-            // adds this dog object to the daycare if provided data is valid
-            boolean added = daycare.addPet(dog);
-            if (added) {
-                System.out.println("Dog added.");
-            } else {
-                System.out.println("Dog was not added.");
+            // id setter
+            if (id >= 1000) {
+                dog.setId(id);
             }
+
+            // capture attendance BEFORE adding
+            captureWeeklyAttendance(dog);
+            // adds this dog object to the daycare if provided data is valid
+            daycare.addPet(dog);
             return;
         }
 
@@ -330,13 +373,15 @@ public class Driver {
             // create a new cat object
             Cat cat = new Cat(id, name, age, sex, owner, indoorCat, favouriteToy);
 
-            // adds this cat object to the daycare if provided data is valid
-            boolean added = daycare.addPet(cat);
-            if (added) {
-                System.out.println("Cat added.");
-            } else {
-                System.out.println("Cat was not added.");
+            // id setter
+            if (id >= 1000) {
+                cat.setId(id);
             }
+
+            captureWeeklyAttendance(cat);
+
+            // adds this cat object to the daycare if provided data is valid
+            daycare.addPet(cat);
             return;
         }
         // handles invalid pet type selection
@@ -391,18 +436,13 @@ public class Driver {
             String breed = ScannerInput.readNextLine("Enter new breed: ");
             boolean dangerousBreed = Utilities.YNtoBoolean(ScannerInput.readNextChar("Is this a dangerous breed? (y/n): "));
             boolean neutered = Utilities.YNtoBoolean(ScannerInput.readNextChar("Is the dog neutered? (y/n): "));
+            daycare.dogUpdate(id, name, age, sex, owner,
+                    breed, dangerousBreed, neutered);
 
-            // create a new dog object with updated values
-            Dog updatedDog = new Dog(id, name, age, sex, owner, breed, dangerousBreed, neutered);
-            // add the updated dog in the daycare
-            Dog result = daycare.updateDog(id, updatedDog);
+            // set weekly attendance on the same stored object
+            captureWeeklyAttendance(existing);
 
-            // again we confirm if the update in this case was successful
-            if (result != null) {
-                System.out.println("Dog updated.");
-            } else {
-                System.out.println("Update failed.");
-            }
+            System.out.println("Dog updated.");
             return;
         }
 
@@ -413,23 +453,38 @@ public class Driver {
             boolean indoorCat = Utilities.YNtoBoolean(ScannerInput.readNextChar("Is the cat indoor only? (y/n): "));
             System.out.println(CatToyUtility.getCatToys());
             String favouriteToy = ScannerInput.readNextLine("Enter new favourite toy (use listed name): ");
+            daycare.catUpdate(id, name, age, sex, owner,
+                    indoorCat, favouriteToy);
 
-            // create a new cat object with updated values
-            Cat updatedCat = new Cat(id, name, age, sex, owner, indoorCat, favouriteToy);
-            // add the updated cat in the daycare
-            Cat result = daycare.updateCat(id, updatedCat);
+            // set weekly attendance on the SAME stored object
+            captureWeeklyAttendance(existing);
 
-            // again we confirm if the update in this case was successful
-            if (result != null) {
-                System.out.println("Cat updated.");
-            } else {
-                System.out.println("Update failed.");
-            }
+            System.out.println("Cat updated.");
             return;
         }
         // in case the pet type is not recognized gets an alert
         System.out.println("Pet type not recognised - update cancelled.");
     }
+
+    private void captureWeeklyAttendance(Pet pet) {
+
+        System.out.println("""
+            Set weekly attendance (enter day numbers).
+            1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat, 7=Sun
+            Enter 0 to finish.
+            """);
+
+        int dayIndex = ScannerInput.readNextInt("Day: ");
+        while (dayIndex != 0) {
+
+            int dayNumber = dayIndex - 1;
+            pet.checkIn(dayNumber);  // Pet already validates range
+
+            dayIndex = ScannerInput.readNextInt("Day: ");
+        }
+        System.out.println("Attendance saved. Days attending: " + pet.numOfDaysInKennel());
+    }
+
 
     // Extra functionality / Enhancement
     //--------------------
@@ -500,7 +555,6 @@ public class Driver {
 
                 // swap pets if the current id is greater than the next one
                 if (pets.get(j).getId() > pets.get(j + 1).getId()) {
-
                     // temporary variable used to swap the two pets
                     Pet temp = pets.get(j);
                     pets.set(j, pets.get(j + 1));
@@ -521,7 +575,6 @@ public class Driver {
 
                 // swap pets if the current name comes after the next name
                 if (pets.get(j).getName().compareToIgnoreCase(pets.get(j + 1).getName()) > 0) {
-
                     // temporary variable used to swap the two pets
                     Pet temp = pets.get(j);
                     pets.set(j, pets.get(j + 1));
@@ -542,7 +595,6 @@ public class Driver {
 
                 // swap pets if the current owner name comes after the next one
                 if (pets.get(j).getOwner().compareToIgnoreCase(pets.get(j + 1).getOwner()) > 0) {
-
                     // temporary variable used to swap the two pets
                     Pet temp = pets.get(j);
                     pets.set(j, pets.get(j + 1));
@@ -563,7 +615,6 @@ public class Driver {
 
                 // swap pets if the current age is greater than the next age
                 if (pets.get(j).getAge() > pets.get(j + 1).getAge()) {
-
                     // temporary variable used to swap the two pets
                     Pet temp = pets.get(j);
                     pets.set(j, pets.get(j + 1));
@@ -572,5 +623,4 @@ public class Driver {
             }
         }
     }
-
 }

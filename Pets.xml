@@ -2,7 +2,7 @@
 <java version="25.0.1" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="models.Dog">
+   <object class="models.Dog" id="Dog0">
     <void property="age">
      <int>8</int>
     </void>
@@ -11,6 +11,26 @@
     </void>
     <void property="dangerousBreed">
      <boolean>true</boolean>
+    </void>
+    <void property="daysAttending">
+     <void index="1">
+      <boolean>true</boolean>
+     </void>
+     <void index="2">
+      <boolean>true</boolean>
+     </void>
+     <void index="3">
+      <boolean>true</boolean>
+     </void>
+     <void index="4">
+      <boolean>true</boolean>
+     </void>
+     <void index="5">
+      <boolean>true</boolean>
+     </void>
+     <void index="6">
+      <boolean>true</boolean>
+     </void>
     </void>
     <void property="id">
      <int>1001</int>
@@ -21,12 +41,24 @@
     <void property="owner">
      <string>Nartiely</string>
     </void>
+    <void id="Boolean0" method="isNeutered"/>
    </object>
   </void>
   <void method="add">
-   <object class="models.Cat">
+   <object class="models.Cat" id="Cat0">
     <void property="age">
      <int>14</int>
+    </void>
+    <void property="daysAttending">
+     <void index="0">
+      <boolean>true</boolean>
+     </void>
+     <void index="1">
+      <boolean>true</boolean>
+     </void>
+     <void index="2">
+      <boolean>true</boolean>
+     </void>
     </void>
     <void property="favouriteToy">
      <string>TUNNEL</string>
@@ -35,10 +67,178 @@
      <int>1005</int>
     </void>
     <void property="name">
-     <string>Ball</string>
+     <string>Billy</string>
     </void>
     <void property="owner">
      <string>Tiago</string>
+    </void>
+    <void property="sex">
+     <char>m</char>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="models.Dog" id="Dog1">
+    <void property="age">
+     <int>1</int>
+    </void>
+    <void property="breed">
+     <string>GOLDEN RETRIEVER</string>
+    </void>
+    <void property="daysAttending">
+     <void index="0">
+      <boolean>true</boolean>
+     </void>
+     <void index="1">
+      <boolean>true</boolean>
+     </void>
+    </void>
+    <void property="id">
+     <int>1006</int>
+    </void>
+    <void property="name">
+     <string>Stuffy</string>
+    </void>
+    <void property="neutered">
+     <boolean>true</boolean>
+    </void>
+    <void property="owner">
+     <string>Lavinia</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="models.Cat" id="Cat1">
+    <void property="age">
+     <int>3</int>
+    </void>
+    <void property="daysAttending">
+     <void index="0">
+      <boolean>true</boolean>
+     </void>
+    </void>
+    <void property="favouriteToy">
+     <string>CATNIP MOUSE</string>
+    </void>
+    <void property="id">
+     <int>1007</int>
+    </void>
+    <void property="indoorCat">
+     <object idref="Boolean0"/>
+    </void>
+    <void property="name">
+     <string>Ba</string>
+    </void>
+    <void property="owner">
+     <string>Amalie</string>
+    </void>
+    <void property="sex">
+     <char>m</char>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="models.Cat" id="Cat2">
+    <void property="age">
+     <int>5</int>
+    </void>
+    <void property="daysAttending">
+     <void index="0">
+      <boolean>true</boolean>
+     </void>
+     <void index="1">
+      <boolean>true</boolean>
+     </void>
+     <void index="2">
+      <boolean>true</boolean>
+     </void>
+     <void index="3">
+      <boolean>true</boolean>
+     </void>
+    </void>
+    <void property="id">
+     <int>1012</int>
+    </void>
+    <void property="name">
+     <string>Molly</string>
+    </void>
+    <void property="owner">
+     <string>Mary</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="models.Dog" id="Dog2">
+    <void property="age">
+     <int>6</int>
+    </void>
+    <void property="breed">
+     <string>BEAGLE</string>
+    </void>
+    <void property="daysAttending">
+     <void index="0">
+      <boolean>true</boolean>
+     </void>
+     <void index="1">
+      <boolean>true</boolean>
+     </void>
+     <void index="2">
+      <boolean>true</boolean>
+     </void>
+     <void index="3">
+      <boolean>true</boolean>
+     </void>
+     <void index="4">
+      <boolean>true</boolean>
+     </void>
+    </void>
+    <void property="id">
+     <int>1013</int>
+    </void>
+    <void property="name">
+     <string>Billie</string>
+    </void>
+    <void property="neutered">
+     <boolean>true</boolean>
+    </void>
+    <void property="owner">
+     <string>Patty</string>
+    </void>
+    <void property="sex">
+     <char>m</char>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="models.Dog" id="Dog3">
+    <void property="age">
+     <int>9</int>
+    </void>
+    <void property="breed">
+     <string>ROTTWEILER</string>
+    </void>
+    <void property="dangerousBreed">
+     <boolean>true</boolean>
+    </void>
+    <void property="daysAttending">
+     <void index="0">
+      <boolean>true</boolean>
+     </void>
+     <void index="1">
+      <boolean>true</boolean>
+     </void>
+    </void>
+    <void property="id">
+     <int>1014</int>
+    </void>
+    <void property="name">
+     <string>Xica</string>
+    </void>
+    <void property="owner">
+     <string>Chico</string>
+    </void>
+    <void property="sex">
+     <char>m</char>
     </void>
    </object>
   </void>
