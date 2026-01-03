@@ -477,8 +477,13 @@ public class Driver {
         int dayIndex = ScannerInput.readNextInt("Day: ");
         while (dayIndex != 0) {
 
-            int dayNumber = dayIndex - 1;
-            pet.checkIn(dayNumber);  // Pet already validates range
+            if (dayIndex < 1 || dayIndex > 7) {
+                System.out.println("Invalid day index - " + dayIndex + "Please enter a day from 1=monday up to 7=sunday");
+            } else {
+                int dayNumber = dayIndex - 1;
+                // Pet already validates range
+                pet.checkIn(dayNumber);
+            }
 
             dayIndex = ScannerInput.readNextInt("Day: ");
         }
